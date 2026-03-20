@@ -332,22 +332,34 @@ class TerminalVelocity:
         if not isinstance(destination, tuple) or not len(destination) == 2:
             return False, f"fly_to destinaton is not a valid position: {destination}"
 
+        if not isinstance(destination, Position):
+            destination = Position(*destination)
+
         speed = max(player.power_distribution[ENGINES] - player.cargo, 0)
 
-        if distance(player.position, destination) <= speed:
-            player.position = destination
-
-            grabbed_message = ""
-            if destination in self.asteroids:
-                # pick up the asteroid if possible
-                if player.cargo < MAX_CARGO:
-                    grabbed_message = ". Grabbed an asteroid!"
-                    player.cargo += 1
-                    self.asteroids.remove(destination)
-
-            return True, f"flew to {destination}{grabbed_message}"
-        else:
+        if distance(player.position, destination) > speed:
             return False, f"tried to fly faster than the available power, overheated! {destination}"
+
+        if destination.x < -self.map_radius or destination.x > self.map_radius \
+                or destination.y < -self.map_radius or destination.y > self.map_radius:
+            return False, f"tried to fly out of the map: {destination}"
+
+        players_positions = self.get_players_positions()
+        if destination in players_positions:
+            return False, f"tried to fly to a position occupied by another player: {destination}"
+
+        player.position = destination
+
+        # movement should be possible
+        grabbed_message = ""
+        if destination in self.asteroids:
+            # pick up the asteroid if possible
+            if player.cargo < MAX_CARGO:
+                grabbed_message = ". Grabbed an asteroid!"
+                player.cargo += 1
+                self.asteroids.remove(destination)
+
+        return True, f"flew to {destination}{grabbed_message}"
 
     def do_action_power_to(self, player, power_distribution):
         """
