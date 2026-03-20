@@ -56,11 +56,11 @@ The rules are pretty simple:
 
 # Installation and running the game
 
-0. Install UV: (TODO insert link)
+0. Install UV: https://docs.astral.sh/uv/getting-started/installation/
 
-1. Clone this repo: (TODO paste command)
+1. Clone this repo: `git clone https://github.com/fisadev/terminal_velocity.git`
 
-2. Run a sample game with: (TODO paste command)
+2. Run a sample game with: `uv run play.py --players Alice:randomaniac,Bob:random_aggressor`
 
 # Building your own bot
 
@@ -147,15 +147,17 @@ old configuration.
 
 Once you have implemented your bot, you can start using it to play games, like this:
 
-(TODO paste command)
+```bash
+uv run play.py --players Alice:randomaniac,Bob:random_aggressor,MyName:my_bot
+```
 
 You can even use multiple copies of your bot at once, like this:
 
-(TODO paste command)
+```bash
+uv run play.py --players Alice:my_bot,Bob:my_bot,Charlie:my_bot
+```
 
 # Game options
 
-The game allows you to configure a few things with optional command arguments:
-
-(TODO describe arguments)
-
+The game allows you to configure a few things with optional command arguments. 
+Check them out with `uv run play.py --help`.
