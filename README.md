@@ -168,10 +168,13 @@ from tv.game import (
     MAX_CARGO, MAX_HP, MAX_POWER,  # limits
     HOME_BASE, ASTEROID, SPACESHIP,  # radar contact types
     # simple class to work with positions, with x,y attributes and some of useful methods 
-    # like `distance_to()` and `positions_in_rannge()`
+    # like `distance_to(another_position)` and `positions_in_range(some_distance)`
     Position,
 )
 ```
+
+All the positions the game gives you in the inputs (the spaceship position, the keys in the radar contacts dict) 
+are instances of `Position`.
 
 # Game options
 
