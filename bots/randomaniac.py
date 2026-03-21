@@ -1,6 +1,6 @@
 import random
 
-from tv.game import MAX_POWER
+from tv.game import MAX_POWER, POWER_TO, FLY_TO, ENGINES, SHIELDS, LASERS
 
 
 class BotLogic:
@@ -19,16 +19,17 @@ class BotLogic:
         """
         if random.random() < 0.8:
             # move to a random destination
-            speed = power_distribution["engines"]
+            speed = power_distribution[ENGINES]
             possible_destinations = list(position.positions_in_range(speed))
-            destination = random.choice(possible_destinations)
 
-            return "fly_to", destination
+            if possible_destinations:
+                destination = random.choice(possible_destinations)
+                return FLY_TO, destination
         else:
             # randomly distribute power
-            power_distribution = {"engines": 0, "shields": 0, "lasers": 0}
+            power_distribution = {ENGINES: 0, SHIELDS: 0, LASERS: 0}
             for _ in range(MAX_POWER):
-                system = random.choice(["engines", "shields", "lasers"])
+                system = random.choice([ENGINES, SHIELDS, LASERS])
                 power_distribution[system] += 1
 
-            return "power_to", power_distribution
+            return POWER_TO, power_distribution
