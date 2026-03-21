@@ -1,5 +1,6 @@
 import random
 
+from tv.game import ASTEROID, POWER_TO, FLY_TO, ENGINES, SHIELDS, LASERS
 
 class BotLogic:
     """
@@ -16,10 +17,14 @@ class BotLogic:
         This bot sets up power to the lasers and just moves randomly, expecting to hurt other ships
         in the process.
         """
-        desired_distribution = {"engines": 1, "shields": 0, "lasers": 2}
+        desired_distribution = {ENGINES: 1, SHIELDS: 0, LASERS: 2}
 
         if power_distribution != desired_distribution:
-            return "power_to", desired_distribution
+            return POWER_TO, desired_distribution
         else:
-            # move to a random destination
-            return "fly_to", random.choice(list(position.positions_in_range(1)))
+            # move to a random destination, but avoid asteroids so we can keep pirating
+            asteroid_positions = set(position for position, thing in radar_contacts.items() if thing == ASTEROID)
+            # keep trying until you get a clear position
+            for destination in position.positions_in_range(1):
+                if destination not in asteroid_positions:
+                    return FLY_TO, destination
