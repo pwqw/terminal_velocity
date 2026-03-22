@@ -1,4 +1,5 @@
 import json
+import subprocess
 import time
 
 import zmq
@@ -32,6 +33,7 @@ class RemoteBotLogicClient:
     def __init__(self, bot_type):
         self.bot_type = bot_type
         self.port = None
+        self.bot_server_process = None
 
     def initialize(self, player_name, map_radius, players, turns, home_base_positions):
         """
@@ -67,13 +69,18 @@ class RemoteBotLogicClient:
         self.port = RemoteBotLogicClient.LAST_USED_PORT + 1
         RemoteBotLogicClient.LAST_USED_PORT = self.port
 
-        # TODO launch container
+        # docker run bot-server --bot-type <type> --port <port>
+        self.bot_server_process = subprocess.Popen(
+            f"docker run -p {self.port}:5000 terminal-velocity-bot-server --bot-type {self.bot_type} --port 5000",
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL,
+            shell=True,
+        )
 
     def stop_bot_server(self):
         """
         Stop the docker container running the bot logic.
         """
-        # TODO stop the container
+        self.bot_server_process.kill()
 
     def remote_call(self, method_name, kw_args, timeout):
         """

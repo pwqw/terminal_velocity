@@ -205,3 +205,17 @@ Check them out with:
 ```bash
 uv run play.py --help
 ```
+
+# Isolation in docker containers
+
+To run untrustworthy bots without risking your computer, you can run the game in "isolated" mode.
+In this mode each bot runs in its own docker container, and the game communicates with them through
+zmq messages.
+
+To use this feature you first need to build the docker image for the bots with:
+
+```bash
+docker build -t terminal-velocity-bot-server .
+```
+
+Then you can run the game in isolated mode with the `--isolated` flag.
