@@ -73,12 +73,12 @@ class Player:
     """
     A player of the game, with an associated bot logic and game status.
     """
-    def __init__(self, name, bot_type, isolated, isolated_turn_timeout):
+    def __init__(self, name, bot_type, isolated):
         self.name = name
         self.bot_type = bot_type
 
         if isolated:
-            self.bot_logic = RemoteBotLogicClient(bot_type, isolated_turn_timeout)
+            self.bot_logic = RemoteBotLogicClient(bot_type)
         else:
             self.bot_logic = Player.import_bot_logic(bot_type)
 
@@ -129,13 +129,12 @@ class TerminalVelocity:
     - ui: an instance of an UI to use
     - log_path: path to a file to use as log for this match
     - isolated: bool, if true, players bots will run isolated in docker containers
-    - isolated_turn_timeout: when running in isolated mode, the timeout to wait for a response from bots
     """
     def __init__(self, map_radius, turns, players_info,
-                 ui=None, log_path=None, isolated=False, isolated_turn_timeout=0.1):
+                 ui=None, log_path=None, isolated=False):
         # initialize players
         self.players = {
-            name: Player(name, bot_type, isolated, isolated_turn_timeout)
+            name: Player(name, bot_type, isolated)
             for name, bot_type in players_info.items()
         }
 

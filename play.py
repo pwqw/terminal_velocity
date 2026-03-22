@@ -15,9 +15,8 @@ from tv.ui import TerminalVelocityUI
 @click.option("--ui-turn-delay", type=float, default=0.2, help="Seconds to wait between turns when showing the ui.")
 @click.option("--log-path", type=click.Path(), default="./last_game.log", help="Path for the log file of the game.")
 @click.option("--isolated", is_flag=True, help="In isolated mode, bots run inside docker containers and their errors are skipped.")
-@click.option("--isolated-turn-timeout", type=float, default=0.5, help="Maximum seconds an isolated bot can take to think its turn before the game skips it.")
 @click.option("--repeat", type=int, default=1, help="Repeat the game N times and return stats about winners of the games.")
-def main(map_radius, players, turns, no_ui, ui_turn_delay, log_path, isolated, isolated_turn_timeout, repeat):
+def main(map_radius, players, turns, no_ui, ui_turn_delay, log_path, isolated, repeat):
     """
     Run a game of Terminal Velocity.
 
@@ -52,7 +51,6 @@ def main(map_radius, players, turns, no_ui, ui_turn_delay, log_path, isolated, i
             ui=ui,
             log_path=log_path,
             isolated=isolated,
-            isolated_turn_timeout=isolated_turn_timeout,
         )
 
         if ui:
