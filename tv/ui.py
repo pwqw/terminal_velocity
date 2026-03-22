@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from itertools import cycle
 from time import sleep
 import curses
 
@@ -47,12 +48,11 @@ class TerminalVelocityUI:
         """
         self.game = game
 
-        free_colors = [
+        free_colors = cycle([
             self.term.blue, self.term.red, self.term.green, self.term.yellow, self.term.cyan,
-            self.term.white, self.term.magenta,
-        ]
+        ])
         for player in self.game.players.values():
-            self.player_colors[player.name] = free_colors.pop(0)
+            self.player_colors[player.name] = next(free_colors)
 
     def render(self, turn_number, winners=None, running_in_fullscreen=True):
         """
